@@ -36,14 +36,16 @@ CanvasRenderingContext2D.prototype.drawLine = function(
 let canvas = document.getElementById('main-canvas');
 let cContext = canvas.getContext('2d');
 
+canvas.width = canvas.height = 500;
+
 canvas.hCenter = canvas.width / 2;
 canvas.vCenter = canvas.height / 2;
 
 let line_width = 2;
 let cell_size = 20;
 let grid_size = canvas.width / cell_size;
-let foregroundColor = 'white';
-let backgroundColor = 'black';
+let foregroundColor = '#393F4C';
+let backgroundColor = '#F9F9F9';
 
 class Coord {
     constructor(x = 0, y = 0) {
@@ -53,7 +55,7 @@ class Coord {
 }
 
 function drawGrid(cellSize, cellsNum) {
-    for (let i = 0; i < cellsNum; ++i) {
+    for (let i = 0; i <= cellsNum; ++i) {
         // Draw vertical lines
         cContext.drawLine(
             foregroundColor, 2, [0, 0], new Coord(i * cellSize, 0), new Coord(i * cellSize, canvas.height), 0);
@@ -69,7 +71,7 @@ function fillGrid(grid) {
         for (let j = 0; j < grid.length; ++j) {
             if (grid[i][j]) {
                 cContext.drawFillRect(
-                    'green',
+                    '#00B6F0',
                     cell_size - line_width,
                     cell_size - line_width,
                     (j * cell_size) + (line_width / 2),
