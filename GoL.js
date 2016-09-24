@@ -222,10 +222,17 @@ canvas.addEventListener('mousemove', function(event) {
     }
 });
 
-canvas.addEventListener('mouseup', function(event) {
+document.addEventListener('mouseup', function(event) {
     if (isClicking) {
-        grid[previousCell.y][previousCell.x] = grid[previousCell.y][previousCell.x] ^ 1;
-        isClicking = false;
+        if (
+            (previousCell.y < grid_size) &&
+            (previousCell.x < grid_size) &&
+            (previousCell.y >= 0) &&
+            (previousCell.x >= 0)
+          ) {
+            grid[previousCell.y][previousCell.x] = grid[previousCell.y][previousCell.x] ^ 1;
+            isClicking = false;
+        }
     }
 });
 
