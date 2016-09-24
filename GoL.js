@@ -197,6 +197,38 @@ canvas.addEventListener('click', function(event) {
     }
 });
 
+let isClicking = false;
+
+canvas.addEventListener('mousedown', function(event) {
+    isClicking = true;
+});
+
+let previousCell = new Coord(-1, -1);
+
+canvas.addEventListener('mousemove', function(event) {
+    if (isClicking) {
+        let mousePos = getMousePosition(event);
+
+        let gridCellx = Math.ceil(mousePos.x / cell_size) - 1;
+        let gridCelly = Math.ceil(mousePos.y / cell_size) - 1;
+
+        let currentCell = new Coord(gridCellx, gridCelly);
+
+        if ((currentCell.x !== previousCell.x) || (currentCell.y !== previousCell.y)) {
+            // Bitwise XOR. Turns 0 into 1 and 1 into 0 without converting to boolean values.
+            grid[gridCelly][gridCellx] = grid[gridCelly][gridCellx] ^ 1;
+            previousCell = currentCell;
+        }
+    }
+});
+
+canvas.addEventListener('mouseup', function(event) {
+    if (isClicking) {
+        grid[previousCell.y][previousCell.x] = grid[previousCell.y][previousCell.x] ^ 1;
+        isClicking = false;
+    }
+});
+
 let isPaused = true;
 
 function update() {
