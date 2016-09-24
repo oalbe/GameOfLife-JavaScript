@@ -66,17 +66,11 @@
         let togglePause = document.getElementsByClassName('button toggle play')[0];
 
         togglePause.addEventListener('click', function() {
-            if (isPaused) {
-                this.innerHTML = 'Pause';
-                isPaused = false;
-            } else {
-                this.innerHTML = 'Play';
-                isPaused = true;
-            }
+            this.innerHTML = isPaused ? 'Pause' : 'Play';
+            isPaused = !isPaused;
         });
 
         let toggleContrast = document.getElementsByClassName('button toggle contrast')[0];
-        toggleContrast.innerHTML = foregroundColor;
 
         toggleContrast.addEventListener('click', function() {
             // Swap canvas background color with its foreground grid color

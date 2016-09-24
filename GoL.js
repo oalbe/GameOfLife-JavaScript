@@ -58,11 +58,11 @@ function drawGrid(cellSize, cellsNum) {
     for (let i = 0; i <= cellsNum; ++i) {
         // Draw vertical lines
         cContext.drawLine(
-            foregroundColor, 2, [0, 0], new Coord(i * cellSize, 0), new Coord(i * cellSize, canvas.height), 0);
+            foregroundColor, line_width, [0, 0], new Coord(i * cellSize, 0), new Coord(i * cellSize, canvas.height), 0);
 
         // Draw horizontal lines
         cContext.drawLine(
-            foregroundColor, 2, [0, 0], new Coord(0, i * cellSize), new Coord(canvas.width, i * cellSize), 0);
+            foregroundColor, line_width, [0, 0], new Coord(0, i * cellSize), new Coord(canvas.width, i * cellSize), 0);
     }
 }
 
