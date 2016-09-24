@@ -39,6 +39,10 @@ let cContext = canvas.getContext('2d');
 canvas.hCenter = canvas.width / 2;
 canvas.vCenter = canvas.height / 2;
 
+let line_width = 2;
+let cell_size = 20;
+let grid_size = canvas.width / cell_size;
+
 class Coord {
     constructor(x = 0, y = 0) {
         this.x = x;
@@ -62,7 +66,13 @@ function fillGrid(grid) {
     for (let i = 0; i < grid.length; ++i) {
         for (let j = 0; j < grid.length; ++j) {
             if (grid[i][j]) {
-                cContext.drawFillRect('green', 38, 38, (j * 40) + 1, (i * 40) + 1);
+                cContext.drawFillRect(
+                    'green',
+                    cell_size - line_width,
+                    cell_size - line_width,
+                    (j * cell_size) + (line_width / 2),
+                    (i * cell_size) + (line_width / 2)
+                );
             }
         }
     }
@@ -107,8 +117,8 @@ function livingNeighbours(grid, row, col) {
 
     let neighboursAlive = 0;
     for (let k = 0; k < neighboursCoord.length; ++k) {
-        if ((neighboursCoord[k].x >= 0) && (neighboursCoord[k].x < 15)) {
-            if ((neighboursCoord[k].y >= 0) && (neighboursCoord[k].y < 15)) {
+        if ((neighboursCoord[k].x >= 0) && (neighboursCoord[k].x < grid_size)) {
+            if ((neighboursCoord[k].y >= 0) && (neighboursCoord[k].y < grid_size)) {
                 if (grid[neighboursCoord[k].x][neighboursCoord[k].y]) {
                     ++neighboursAlive;
                 }
@@ -120,7 +130,7 @@ function livingNeighbours(grid, row, col) {
 }
 
 function advanceGeneration(grid) {
-    let newGrid = initGrid(600/40);
+    let newGrid = initGrid(grid_size);
 
     for (let i = 0; i < grid.length; ++i) {
         for (let j = 0; j < grid[0].length; ++j) {
@@ -144,28 +154,12 @@ function advanceGeneration(grid) {
     return newGrid;
 }
 
-let grid = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-];
+let grid = initGrid(grid_size);
 
 document.addEventListener('keydown', function(event) {
     if (event.key === ' ') {
         cContext.drawFillRect('black', canvas.width, canvas.height, 0, 0);
-        drawGrid(40, 600 / 40);
+        drawGrid(cell_size, grid_size);
         grid = advanceGeneration(grid);
         fillGrid(grid);
     }
@@ -191,8 +185,8 @@ canvas.addEventListener('click', function(event) {
     let mousePos = getMousePosition(event);
 
     if (isPaused) {
-        let gridCellx = Math.ceil(mousePos.x / 40) - 1;
-        let gridCelly = Math.ceil(mousePos.y / 40) - 1;
+        let gridCellx = Math.ceil(mousePos.x / cell_size) - 1;
+        let gridCelly = Math.ceil(mousePos.y / cell_size) - 1;
 
         // Bitwise XOR. Turns 0 into 1 and 1 into 0 without converting to boolean values.
         grid[gridCelly][gridCellx] = grid[gridCelly][gridCellx] ^ 1;
@@ -208,7 +202,7 @@ function update() {
 
 function render() {
     cContext.drawFillRect('black', canvas.width, canvas.height, 0, 0);
-    drawGrid(40, 600/40);
+    drawGrid(cell_size, grid_size);
     fillGrid(grid);
 }
 
@@ -232,10 +226,5 @@ function loop() {
 }
 
 (function() {
-    // cContext.drawFillRect('black', canvas.width, canvas.height, 0, 0);
-    // drawGrid(40, 600 / 40);
-
-    // fillGrid(grid);
-
     loop();
 })();
