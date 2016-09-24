@@ -71,7 +71,8 @@ function fillGrid(grid) {
         for (let j = 0; j < grid.length; ++j) {
             if (grid[i][j]) {
                 cContext.drawFillRect(
-                    '#00B6F0',
+                    '#93FE00',
+                    // '#00B6F0',
                     cell_size - line_width,
                     cell_size - line_width,
                     (j * cell_size) + (line_width / 2),
@@ -179,6 +180,9 @@ function getMousePosition(event) {
     };
 }
 
+let previousCell = new Coord(-1, -1);
+let currentCell = new Coord(-1, -1);
+
 canvas.addEventListener('click', function(event) {
     let mousePos = getMousePosition(event);
 
@@ -186,8 +190,13 @@ canvas.addEventListener('click', function(event) {
         let gridCellx = Math.ceil(mousePos.x / cell_size) - 1;
         let gridCelly = Math.ceil(mousePos.y / cell_size) - 1;
 
-        // Bitwise XOR. Turns 0 into 1 and 1 into 0 without converting to boolean values.
-        grid[gridCelly][gridCellx] = grid[gridCelly][gridCellx] ^ 1;
+        currentCell = new Coord(gridCellx, gridCelly);
+
+        if ((currentCell.x !== previousCell.x) || (currentCell.y !== previousCell.y)) {
+            // Bitwise XOR. Turns 0 into 1 and 1 into 0 without converting to boolean values.
+            grid[gridCelly][gridCellx] = grid[gridCelly][gridCellx] ^ 1;
+            previousCell = currentCell;
+        }
     }
 });
 
@@ -197,16 +206,14 @@ canvas.addEventListener('mousedown', function(event) {
     isClicking = true;
 });
 
-let previousCell = new Coord(-1, -1);
-
 canvas.addEventListener('mousemove', function(event) {
-    if (isClicking) {
+    if (isClicking && isPaused) {
         let mousePos = getMousePosition(event);
 
         let gridCellx = Math.ceil(mousePos.x / cell_size) - 1;
         let gridCelly = Math.ceil(mousePos.y / cell_size) - 1;
 
-        let currentCell = new Coord(gridCellx, gridCelly);
+        currentCell = new Coord(gridCellx, gridCelly);
 
         if ((currentCell.x !== previousCell.x) || (currentCell.y !== previousCell.y)) {
             // Bitwise XOR. Turns 0 into 1 and 1 into 0 without converting to boolean values.
@@ -217,17 +224,7 @@ canvas.addEventListener('mousemove', function(event) {
 });
 
 document.addEventListener('mouseup', function(event) {
-    if (isClicking) {
-        if (
-            (previousCell.y < grid_size) &&
-            (previousCell.x < grid_size) &&
-            (previousCell.y >= 0) &&
-            (previousCell.x >= 0)
-          ) {
-            grid[previousCell.y][previousCell.x] = grid[previousCell.y][previousCell.x] ^ 1;
-            isClicking = false;
-        }
-    }
+    isClicking = false;
 });
 
 let isPaused = true;
