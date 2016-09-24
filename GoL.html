@@ -59,6 +59,7 @@
     <script src="Grid.js" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
+    (function() {
         let canvasControl = document.getElementsByClassName('canvas-control')[0];
         canvasControl.style.minWidth = canvas.width + 'px';
 
@@ -91,6 +92,7 @@
             togglePause.innerHTML = 'Play';
             grid = initGrid(grid_size);
         });
+    }());
     </script>
 </body>
 </html>
