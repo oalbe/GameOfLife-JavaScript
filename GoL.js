@@ -42,6 +42,8 @@ canvas.vCenter = canvas.height / 2;
 let line_width = 2;
 let cell_size = 20;
 let grid_size = canvas.width / cell_size;
+let foregroundColor = 'white';
+let backgroundColor = 'black';
 
 class Coord {
     constructor(x = 0, y = 0) {
@@ -54,11 +56,11 @@ function drawGrid(cellSize, cellsNum) {
     for (let i = 0; i < cellsNum; ++i) {
         // Draw vertical lines
         cContext.drawLine(
-            'white', 2, [0, 0], new Coord(i * cellSize, 0), new Coord(i * cellSize, canvas.height), 0);
+            foregroundColor, 2, [0, 0], new Coord(i * cellSize, 0), new Coord(i * cellSize, canvas.height), 0);
 
         // Draw horizontal lines
         cContext.drawLine(
-            'white', 2, [0, 0], new Coord(0, i * cellSize), new Coord(canvas.width, i * cellSize), 0);
+            foregroundColor, 2, [0, 0], new Coord(0, i * cellSize), new Coord(canvas.width, i * cellSize), 0);
     }
 }
 
@@ -158,7 +160,7 @@ let grid = initGrid(grid_size);
 
 document.addEventListener('keydown', function(event) {
     if (event.key === ' ') {
-        cContext.drawFillRect('black', canvas.width, canvas.height, 0, 0);
+        cContext.drawFillRect(backgroundColor, canvas.width, canvas.height, 0, 0);
         drawGrid(cell_size, grid_size);
         grid = advanceGeneration(grid);
         fillGrid(grid);
@@ -193,7 +195,7 @@ canvas.addEventListener('click', function(event) {
     }
 });
 
-let isPaused = false;
+let isPaused = true;
 
 function update() {
     if (isPaused) return;
@@ -201,7 +203,7 @@ function update() {
 }
 
 function render() {
-    cContext.drawFillRect('black', canvas.width, canvas.height, 0, 0);
+    cContext.drawFillRect(backgroundColor, canvas.width, canvas.height, 0, 0);
     drawGrid(cell_size, grid_size);
     fillGrid(grid);
 }

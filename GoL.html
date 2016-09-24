@@ -2,14 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Conway's Game of Life</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+
+    <style type="text/css" media="screen">
+        canvas {
+            display: block;
+        }
+
+        .canvas-control {
+            border: 1px solid red;
+            min-width: 600px;
+            width: 0;
+            margin: 0 auto;
+        }
+
+        .controls {
+            text-align: center;
+        }
+    </style>
 </head>
 <body id="main-body">
-    <canvas id="main-canvas" width="600" height="600">
-        Sorry, your browser doesn't support <pre>canvas</pre>. Please update it.
-    </canvas>
+    <section class="canvas-control">
+        <canvas id="main-canvas" width="600" height="600">
+            Sorry, your browser doesn't support <pre>canvas</pre>. Please update it.
+        </canvas>
+
+        <section class="controls">
+            <button class="toggle play">
+                Play
+            </button>
+
+            <button class="toggle contrast">
+                Black
+            </button>
+        </section>
+    </section>
 
     <script src="GoL.js" type="text/javascript" charset="utf-8"></script>
     <script src="Grid.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        let toggleButton = document.getElementsByClassName('toggle play')[0];
+
+        toggleButton.addEventListener('click', function() {
+            if (isPaused) {
+                this.innerHTML = 'Pause';
+                isPaused = false;
+            } else {
+                this.innerHTML = 'Play';
+                isPaused = true;
+            }
+        });
+
+        let toggleContrast = document.getElementsByClassName('toggle contrast')[0];
+
+        toggleContrast.innerHTML = foregroundColor;
+
+        toggleContrast.addEventListener('click', function() {
+            // Swap canvas background color with its foreground grid color
+            let temp = backgroundColor;
+            backgroundColor = foregroundColor;
+            foregroundColor = temp;
+            this.innerHTML = foregroundColor;
+        });
+    </script>
 </body>
 </html>
