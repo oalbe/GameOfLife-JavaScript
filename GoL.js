@@ -162,13 +162,6 @@ function advanceGeneration(grid) {
 let grid = initGrid(grid_size);
 
 document.addEventListener('keydown', function(event) {
-    if (event.key === ' ') {
-        cContext.drawFillRect(backgroundColor, canvas.width, canvas.height, 0, 0);
-        drawGrid(cell_size, grid_size);
-        grid = advanceGeneration(grid);
-        fillGrid(grid);
-    }
-
     if (event.key === 'p') {
         isPaused = !isPaused;
     }
