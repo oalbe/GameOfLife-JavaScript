@@ -136,20 +136,21 @@ function livingNeighbours(grid, row, col) {
 function advanceGeneration(grid) {
     let newGrid = initGrid(grid_size);
 
-    for (let i = 0; i < grid.length; ++i) {
-        for (let j = 0; j < grid[0].length; ++j) {
+    for (let i = 0; i < grid_size; ++i) {
+        for (let j = 0; j < grid_size; ++j) {
             let neighboursAlive = livingNeighbours(grid, i, j);
             if (grid[i][j]) {
-                if (neighboursAlive < 2) {
-                    newGrid[i][j] = 0; // Dead in the next generation. Underpopulation.
-                } else if (neighboursAlive >= 2 && neighboursAlive <= 3) {
+                // Dead in the next generation.
+                // Underpopulation (< 2). Overcrowding (> 2).
+                if ((neighboursAlive < 2) || (neighboursAlive > 3)) {
+                    newGrid[i][j] = 0;
+                } else if ((neighboursAlive >= 2) && (neighboursAlive <= 3)) {
                     newGrid[i][j] = 1; // Stays alive in the next generation.
-                } else if (neighboursAlive > 3) {
-                    newGrid[i][j] = 0; // Dead in the next generation. Overcrowding.
                 }
             } else {
+                // Comes to life in the next generation.
                 if (neighboursAlive === 3) {
-                    newGrid[i][j] = 1; // Comes to life in the next generation.
+                    newGrid[i][j] = 1;
                 }
             }
         }
