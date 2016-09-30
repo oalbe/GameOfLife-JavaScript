@@ -6,7 +6,7 @@ Created using JavaScript and HTML5.
 
 # Screenshot
 
-![GoL Screenshot](http://imgur.com/aVZmm13)
+![GoL Screenshot](http://i.giphy.com/3o6ZtohgzWWYtF9LaM.gif)
 
 # TODO
 
